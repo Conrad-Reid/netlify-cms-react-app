@@ -2,10 +2,14 @@ import React from "react"
 import { Link }  from "react-router-dom"
 import Markdown from "react-markdown"
 import postlist from "../posts.json"
-
+import TestFile from "..markdownFiles/testFile.md"
 import "./components.css"
 
+
 const PostList = () => {
+    let {markdown} = {markdown:''};
+    fetch(TestFile).then(res => res.text()).then( text => markdown = {markdown: text});
+    
     const excerptList = postlist.map(post => {
         return post.content.split(" ").slice(0, 20).join(" ") + "..."
     })
@@ -24,12 +28,17 @@ const PostList = () => {
                             <hr/>
                             <Markdown source={excerptList[i]} escapeHtml={false} />
                             <small><Link className="links" to={`/post/${post.id}`}>Read more</Link></small>
+                            <div> 
+                                <Markdown source={markdown}/>
+                            </div>
                         </div>
+                        
                     )
                 })
             }
         </div>
     )
 }
+
 
 export default PostList
